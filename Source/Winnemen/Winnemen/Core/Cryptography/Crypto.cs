@@ -5,10 +5,16 @@ namespace Winnemen.Core.Cryptography
 {
     public class Crypto : ICrypto
     {
+        private readonly IRijndaelCryptography _cryptography;
+
+        public Crypto(IRijndaelCryptography cryptography)
+        {
+            _cryptography = cryptography;
+        }
 
         public string Encrypt(string value)
         {
-            return RijndaelCryptography.Encrypt(value);
+            return _cryptography.Encrypt(value);
         }
 
         public string Decrypt(string value)
@@ -17,7 +23,7 @@ namespace Winnemen.Core.Cryptography
 
             try
             {
-                result = RijndaelCryptography.Decrypt(value);
+                result = _cryptography.Decrypt(value);
             }
             catch (Exception)
             {
@@ -31,7 +37,7 @@ namespace Winnemen.Core.Cryptography
 
         public string Encrypt(string key, string iv, string value)
         {
-            return RijndaelCryptography.Encrypt(value, key, iv);
+            return _cryptography.Encrypt(value, key, iv);
         }
         
         public string Decrypt(string key, string iv, string value)
@@ -40,7 +46,7 @@ namespace Winnemen.Core.Cryptography
 
             try
             {
-              result = RijndaelCryptography.Decrypt(value, key, iv);
+                result = _cryptography.Decrypt(value, key, iv);
             }
             catch (Exception)
             {

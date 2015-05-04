@@ -5,7 +5,139 @@ using System.Text;
 
 namespace Winnemen.Core.Cryptography
 {
-    public class RijndaelCryptography
+    public interface IRijndaelCryptography
+    {
+        /// <summary>
+        /// Encrypts the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="iv">The iv.</param>
+        /// <returns></returns>
+        string Encrypt(string data, string key, string iv);
+
+        /// <summary>
+        /// Raws the encrypt.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        byte[] RawEncrypt(string data);
+
+        /// <summary>
+        /// Encrypts the hex encoded.
+        /// </summary>
+        /// <param name="clearText">The clear text.</param>
+        /// <returns>Hex Encoded String</returns>
+        string EncryptHexEncoded(string clearText);
+
+        /// <summary>
+        /// Raws the decrypt.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns></returns>
+        string RawDecrypt(byte[] bytes);
+
+        /// <summary>
+        /// Decrypts the hex encoded.
+        /// </summary>
+        /// <param name="hexEncodedText">The hex encoded text.</param>
+        /// <returns>clear text</returns>
+        string DecryptHexEncoded(string hexEncodedText);
+
+        /// <summary>
+        /// Add DateTime Xor and Time Salt
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        string XorString(string val);
+
+        /// <summary>
+        /// Encrypts the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        string Encrypt(string data);
+
+        /// <summary>
+        /// Encrypts the specified val.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        string Encrypt(string val, string key);
+
+        /// <summary>
+        /// Encrypts the string to bytes_ AES.
+        /// </summary>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="iv">The IV.</param>
+        /// <returns></returns>
+        byte[] EncryptStringToBytesAes(string plainText, byte[] key, byte[] iv);
+
+        /// <summary>
+        /// Decrypts the safe.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        string DecryptSafe(string data);
+
+        /// <summary>
+        /// Decrypts the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="iv">The iv.</param>
+        /// <returns></returns>
+        string Decrypt(string data, string key, string iv);
+
+        /// <summary>
+        /// Decrypts the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        string Decrypt(string data);
+
+        /// <summary>
+        /// Decrypts the specified val.
+        /// </summary>
+        /// <param name="val">The val.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        string Decrypt(string val, string key);
+
+        /// <summary>
+        /// Decrypts the string from bytes_ AES.
+        /// </summary>
+        /// <param name="cipherText">The cipher text.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="iv">The IV.</param>
+        /// <returns></returns>
+        string DecryptStringFromBytesAes(byte[] cipherText, byte[] key, byte[] iv);
+
+        /// <summary>
+        /// Base64 Encode the given string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        string Encode(string data);
+
+        /// <summary>
+        /// Encodes the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        string Encode(byte[] data);
+
+        /// <summary>
+        /// Decodes the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        byte[] Decode(string data);
+    }
+
+    public class RijndaelCryptography : IRijndaelCryptography
     {
         public RijndaelCryptography(string key, string iv)
         {
@@ -16,22 +148,22 @@ namespace Winnemen.Core.Cryptography
         private readonly string _defaultIV;
         private readonly string _defaultKey;
 
-        private static readonly object _lock = new object();
-        private static string _iv = string.Empty;
-        private static string _key = string.Empty;
+        //private static readonly object _lock = new object();
+        //private static string _iv = string.Empty;
+        //private static string _key = string.Empty;
 
         /// <summary>
         /// Sets Config Key from Web.Config
         /// </summary>
         /// <returns></returns>
-        private static string GetKey
+        private  string GetKey
         {
             get
             {
-                const string key = "Key";
-                SetStaticVariableValue(key, ref _key);
+                //const string key = "Key";
+                //SetStaticVariableValue(key, ref _key);
 
-                return _key;
+                return _defaultKey;
             }
         }
 
@@ -39,14 +171,14 @@ namespace Winnemen.Core.Cryptography
         /// Sets IV Key from Web.Config
         /// </summary>
         /// <returns></returns>
-        private static string GetIV
+        private string GetIV
         {
             get
             {
-                const string key = "IV";
-                SetStaticVariableValue(key, ref _iv);
+                //const string key = "IV";
+                //SetStaticVariableValue(key, ref _iv);
 
-                return _iv;
+                return _defaultIV;
             }
         }
 
@@ -57,7 +189,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string Encrypt(string data, string key, string iv)
+        public string Encrypt(string data, string key, string iv)
         {
             return Encode(EncryptStringToBytesAes(data, GetLegalKey(key), Encoding.ASCII.GetBytes(iv)));
         }
@@ -67,7 +199,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static byte[] RawEncrypt(string data)
+        public byte[] RawEncrypt(string data)
         {
             return EncryptStringToBytesAes(data, GetLegalKey(GetKey), Encoding.ASCII.GetBytes(GetIV));
         }
@@ -77,7 +209,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="clearText">The clear text.</param>
         /// <returns>Hex Encoded String</returns>
-        public static string EncryptHexEncoded(string clearText)
+        public string EncryptHexEncoded(string clearText)
         {
             byte[] encryptedBytes = RawEncrypt(clearText);
             return HexEncoding.ToString(encryptedBytes);
@@ -88,7 +220,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         /// <returns></returns>
-        public static string RawDecrypt(byte[] bytes)
+        public  string RawDecrypt(byte[] bytes)
         {
             return DecryptStringFromBytesAes(bytes, GetLegalKey(GetKey), Encoding.ASCII.GetBytes(GetIV));
         }
@@ -98,7 +230,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="hexEncodedText">The hex encoded text.</param>
         /// <returns>clear text</returns>
-        public static string DecryptHexEncoded(string hexEncodedText)
+        public string DecryptHexEncoded(string hexEncodedText)
         {
             byte[] hex = HexEncoding.GetBytes(hexEncodedText);
             return RawDecrypt(hex);
@@ -109,7 +241,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        public static string XorString(string val)
+        public string XorString(string val)
         {
             // Get the current time (which will be used as the salt).
             DateTime currentTime = DateTime.UtcNow;
@@ -166,38 +298,11 @@ namespace Winnemen.Core.Cryptography
         }
 
         /// <summary>
-        /// Sets the static variable value.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="staticVariable">The static variable.</param>
-        private static void SetStaticVariableValue(string key, ref string staticVariable)
-        {
-            if (string.IsNullOrEmpty(staticVariable))
-            {
-                lock (_lock)
-                {
-                    if (string.IsNullOrEmpty(staticVariable))
-                    {
-                        if (key == "IV")
-                        {
-                            staticVariable = _defaultIV;
-                        }
-                        else if (key == "Key")
-                        {
-                            staticVariable = _defaultKey;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
         /// Encrypts the specified data.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static string Encrypt(string data)
+        public string Encrypt(string data)
         {
             return Encrypt(data, GetKey, GetIV);
         }
@@ -208,7 +313,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="val">The val.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public static string Encrypt(string val, string key)
+        public string Encrypt(string val, string key)
         {
             return Encrypt(val, key, GetIV);
         }
@@ -220,7 +325,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="key">The key.</param>
         /// <param name="iv">The IV.</param>
         /// <returns></returns>
-        public static byte[] EncryptStringToBytesAes(string plainText, byte[] key, byte[] iv)
+        public  byte[] EncryptStringToBytesAes(string plainText, byte[] key, byte[] iv)
         {
             // Check arguments.
             if (string.IsNullOrEmpty(plainText))
@@ -288,7 +393,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static string DecryptSafe(string data)
+        public  string DecryptSafe(string data)
         {
             if (string.IsNullOrEmpty(data)) return data;
             try
@@ -308,7 +413,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string Decrypt(string data, string key, string iv)
+        public  string Decrypt(string data, string key, string iv)
         {
             return DecryptStringFromBytesAes(Convert.FromBase64String(data), GetLegalKey(key),
                                               Encoding.ASCII.GetBytes(iv));
@@ -319,7 +424,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static string Decrypt(string data)
+        public  string Decrypt(string data)
         {
             return Decrypt(data, GetKey, GetIV);
         }
@@ -330,7 +435,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="val">The val.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public static string Decrypt(string val, string key)
+        public  string Decrypt(string val, string key)
         {
             return Decrypt(val, key, GetIV);
         }
@@ -342,7 +447,7 @@ namespace Winnemen.Core.Cryptography
         /// <param name="key">The key.</param>
         /// <param name="iv">The IV.</param>
         /// <returns></returns>
-        public static string DecryptStringFromBytesAes(byte[] cipherText, byte[] key, byte[] iv)
+        public  string DecryptStringFromBytesAes(byte[] cipherText, byte[] key, byte[] iv)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -411,7 +516,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static string Encode(string data)
+        public  string Encode(string data)
         {
             return Encode(Encoding.ASCII.GetBytes(data));
         }
@@ -421,7 +526,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static string Encode(byte[] data)
+        public  string Encode(byte[] data)
         {
             /*
             // get the output and trim the '\0' bytes
@@ -441,7 +546,7 @@ namespace Winnemen.Core.Cryptography
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static byte[] Decode(string data)
+        public  byte[] Decode(string data)
         {
             return Convert.FromBase64String(data);
         }
@@ -451,7 +556,7 @@ namespace Winnemen.Core.Cryptography
         /// and length of the private key provided, padding the secret key with space character
         /// to meet the legal size of the algorithm.
         /// </remarks>
-        private static byte[] GetLegalKey(string key)
+        private  byte[] GetLegalKey(string key)
         {
             string sTemp;
             SymmetricAlgorithm mobjCryptoService = new RijndaelManaged();
