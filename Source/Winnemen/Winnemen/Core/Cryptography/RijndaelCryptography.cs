@@ -139,6 +139,11 @@ namespace Winnemen.Core.Cryptography
 
     public class RijndaelCryptography : IRijndaelCryptography
     {
+        public RijndaelCryptography()
+        {
+            
+        }
+
         public RijndaelCryptography(string key, string iv)
         {
             _defaultIV = iv;

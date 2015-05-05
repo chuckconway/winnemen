@@ -4,7 +4,7 @@ using Winnemen.Core.Cryptography;
 
 namespace Winnemen.Web.Cryptography
 {
-    public class CryptoWeb
+    public class CryptoWeb : ICryptoWeb
     {
         private readonly ICrypto _crypto;
 

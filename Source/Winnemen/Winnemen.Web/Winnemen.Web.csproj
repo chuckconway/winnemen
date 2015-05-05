@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\CryptoWeb.cs" />
+    <Compile Include="Cryptography\ICryptoWeb.cs" />
     <Compile Include="Extensions\ApiControllerExtensions.cs" />
     <Compile Include="ModelBinders\StringArrayBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

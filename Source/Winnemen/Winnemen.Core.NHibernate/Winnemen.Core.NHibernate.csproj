@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICryptoDatabase.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="NHibernateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
