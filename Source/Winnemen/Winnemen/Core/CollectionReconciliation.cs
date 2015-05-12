@@ -10,8 +10,8 @@ namespace Winnemen.Core
         where TId : struct
     {
 
-        private List<TMaster> _master;
-        private List<TReconcile> _reconcile;
+        private IList<TMaster> _master;
+        private IList<TReconcile> _reconcile;
         private Func<TMaster, TId> _masterId;
         private Func<TReconcile, TId> _reconcileId;
 
@@ -93,7 +93,7 @@ namespace Winnemen.Core
         /// </summary>
         /// <param name="reconcile">The reconcile.</param>
         /// <returns>CollectionReconciliation&lt;TMaster, TReconcile, TId&gt;.</returns>
-        public CollectionReconciliation<TMaster, TReconcile, TId> Reconcile(List<TReconcile> reconcile)
+        public CollectionReconciliation<TMaster, TReconcile, TId> Reconcile(IList<TReconcile> reconcile)
         {
             _reconcile = reconcile;
             return this;
@@ -104,7 +104,7 @@ namespace Winnemen.Core
         /// Reconciles the two collections.
         /// </summary>
         /// <returns>TApprentice.</returns>
-        public List<TReconcile> Reconcile()
+        public IList<TReconcile> Reconcile()
         {
             foreach (var address in _master)
             {

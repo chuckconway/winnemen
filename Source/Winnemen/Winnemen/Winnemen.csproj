@@ -56,6 +56,7 @@
     <Compile Include="Core\Extensions\BusinessExtensions.cs" />
     <Compile Include="Core\Extensions\CollectionExtensions.cs" />
     <Compile Include="Core\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Core\Extensions\EnumerationsExtensions.cs" />
     <Compile Include="Core\Extensions\ListOfStringsExtensions.cs" />
     <Compile Include="Core\Extensions\MapperExtensions.cs" />
     <Compile Include="Core\Extensions\ObjectExtensions.cs" />

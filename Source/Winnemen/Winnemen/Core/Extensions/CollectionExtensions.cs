@@ -15,7 +15,7 @@ namespace Winnemen.Core.Extensions
         /// <param name="masterId">The master identifier.</param>
         /// <param name="newItem">The new item.</param>
         /// <param name="update">The update.</param>
-        public static CollectionReconciliation<TMaster, TReconcile, TId> Reconcile<TReconcile, TMaster, TId>(this List<TReconcile> reconcile)
+        public static CollectionReconciliation<TMaster, TReconcile, TId> Reconcile<TReconcile, TMaster, TId>(this IList<TReconcile> reconcile)
             where TMaster : class, new()
             where TReconcile : class, new()
             where TId : struct

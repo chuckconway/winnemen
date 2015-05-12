@@ -40,6 +40,16 @@ namespace Winnemen.Core.Extensions
             return val;
         }
 
+        public static void IsNull<T>(this T val, Action result) where T : class
+        {
+            if (val == null)
+            {
+                result();
+            }
+
+            //return val;
+        }
+
         /// <summary>
         /// Determines whether [is not null] [the specified value].
         /// </summary>
