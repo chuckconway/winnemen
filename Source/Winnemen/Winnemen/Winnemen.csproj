@@ -60,6 +60,7 @@
     <Compile Include="Core\Extensions\ListOfStringsExtensions.cs" />
     <Compile Include="Core\Extensions\MapperExtensions.cs" />
     <Compile Include="Core\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Core\Extensions\PropertyInfoExtensions.cs" />
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

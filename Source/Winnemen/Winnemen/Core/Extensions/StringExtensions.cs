@@ -112,6 +112,22 @@ namespace Winnemen.Core.Extensions
 
             return cleanString;
         }
+
+        public static string SpiltOnCaptialLetters(this string s)
+        {
+            var builder = new StringBuilder();
+            foreach (var c in s)
+            {
+                if (char.IsUpper(c) && builder.Length > 0)
+                {
+                    builder.Append(' ');
+                }
+
+                builder.Append(c);
+            }
+            
+            return builder.ToString();
+        }
     }
 
 }
