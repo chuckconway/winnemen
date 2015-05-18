@@ -16,6 +16,8 @@ namespace Winnemen.Web
         /// <value>The errors.</value>
         public IEnumerable<string> Errors { get; set; }
 
+        public string Version { get; set; }
+
         /// <summary>
         /// Gets or sets the result.
         /// </summary>
