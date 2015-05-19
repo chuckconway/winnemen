@@ -6,12 +6,42 @@ namespace Winnemen.Core.Extensions
     {
         public static bool GreaterThanZero(this int value)
         {
-            return value > 0;
+            return value.GreaterThan(0);
         }
 
-        public static bool GreaterThanOrEqualToZero(this int value)
+        public static bool GreaterThanOrEqualToZero(this int integer)
         {
-            return value >= 0;
+            return integer.GreaterThanOrEqual(0);
+        }
+
+        public static bool GreaterThan(this int integer, int value)
+        {
+            return integer > value;
+        }
+
+        public static bool GreaterThanOrEqual(this int integer, int value)
+        {
+            return integer >= value;
+        }
+
+        public static bool LessThanZero(this int value)
+        {
+            return value.LessThan(0);
+        }
+
+        public static bool LessThanOrEqualToZero(this int integer)
+        {
+            return integer.LessThanOrEqual(0);
+        }
+
+        public static bool LessThan(this int integer, int value)
+        {
+            return integer > value;
+        }
+
+        public static bool LessThanOrEqual(this int integer, int value)
+        {
+            return integer >= value;
         }
 
         /// <summary>

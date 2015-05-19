@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Winnemen.Core.Extensions;
@@ -10,6 +12,20 @@ namespace Winnemen.Web.Extensions
 {
     public static class ApiControllerExtensions
     {
+        private static readonly string AssemblyVersion = GetVersion();
+        
+        private static string GetVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            var version = assembly.Version;
+
+            if (version.IsNotNull())
+            {
+                return version.ToString();
+            }
+
+            return string.Empty;
+        }
 
         /// <summary>
         /// Oks the specified controller.
@@ -30,7 +46,8 @@ namespace Winnemen.Web.Extensions
             var response = controller.Request.CreateResponse(HttpStatusCode.OK, new ResponseResult<TDestination>
             {
                 Succeeded = true,
-                Result = result
+                Result = result,
+                Version = AssemblyVersion
             });
 
             return new ResponseMessageResult(response);
@@ -48,7 +65,8 @@ namespace Winnemen.Web.Extensions
             var response = controller.Request.CreateResponse(HttpStatusCode.OK, new ResponseResult<TResult>
             {
                 Succeeded = true,
-                Result = result
+                Result = result,
+                Version = AssemblyVersion
             });
 
             return new ResponseMessageResult(response);
@@ -67,6 +85,7 @@ namespace Winnemen.Web.Extensions
             var response = controller.Request.CreateResponse(HttpStatusCode.OK, new ResponseResult<object>
             {
                 Succeeded = true,
+                Version = AssemblyVersion
             });
 
             return new ResponseMessageResult(response);
@@ -83,7 +102,8 @@ namespace Winnemen.Web.Extensions
             var error = controller.Request.CreateResponse(HttpStatusCode.BadRequest, new ResponseResult<object>
             {
                 Succeeded = false,
-                Errors = errors
+                Errors = errors,
+                Version = AssemblyVersion
             });
 
             return new ResponseMessageResult(error);
@@ -116,7 +136,8 @@ namespace Winnemen.Web.Extensions
             var response = controller.Request.CreateResponse(HttpStatusCode.Unauthorized, new ResponseResult<object>
             {
                 Succeeded = false,
-                Errors = errors
+                Errors = errors,
+                Version = AssemblyVersion
             });
 
             return new ResponseMessageResult(response);
