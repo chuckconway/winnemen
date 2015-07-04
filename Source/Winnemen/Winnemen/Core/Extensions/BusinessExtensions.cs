@@ -44,6 +44,19 @@ namespace Winnemen.Core.Extensions
             return integer >= value;
         }
 
+        public static bool IsZero(this int integer)
+        {
+            return integer == 0;
+        }
+
+        public static void IsZero(this int integer, Action action)
+        {
+            if (integer == 0)
+            {
+                action();
+            }
+        }
+
         /// <summary>
         /// Determines whether the specified value is null.
         /// </summary>
@@ -76,8 +89,6 @@ namespace Winnemen.Core.Extensions
             {
                 result();
             }
-
-            //return val;
         }
 
         /// <summary>
