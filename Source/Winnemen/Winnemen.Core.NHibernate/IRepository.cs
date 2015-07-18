@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using NHibernate.Criterion;
+using Winnemen.Core.NHibernate.Paging;
 
 namespace Winnemen.Core.NHibernate
 {
@@ -38,6 +40,13 @@ namespace Winnemen.Core.NHibernate
         List<TScheme> List(Expression<Func<TScheme, bool>> @where);
 
         /// <summary>
+        /// Lists the specified where.
+        /// </summary>
+        /// <param name="where">The where.</param>
+        /// <returns>List&lt;TScheme&gt;.</returns>
+        List<TScheme> List(ICriterion restriction);
+
+        /// <summary>
         /// Saves the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -50,5 +59,11 @@ namespace Winnemen.Core.NHibernate
         /// </summary>
         /// <param name="item">The item.</param>
         void Delete(TScheme item);
+
+        IPagedList<TScheme> Paged(int pageIndex, int pageSize);
+
+        IPagedList<TScheme> Paged(int pageIndex, int pageSize, Expression<Func<TScheme, bool>> @where);
+
+        IPagedList<TScheme> Paged(int pageIndex, int pageSize, ICriterion restriction);
     }
 }

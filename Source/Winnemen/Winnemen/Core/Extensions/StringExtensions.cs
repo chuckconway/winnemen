@@ -113,6 +113,22 @@ namespace Winnemen.Core.Extensions
             return cleanString;
         }
 
+        public static void IsNullOrEmpty(this string val, Action action)
+        {
+            if (string.IsNullOrEmpty(val))
+            {
+                action();
+            }
+        }
+
+        public static void IsNotNullOrEmpty(this string val, Action action)
+        {
+            if (!string.IsNullOrEmpty(val))
+            {
+                action();
+            }
+        }
+
         public static string SpiltOnCaptialLetters(this string s)
         {
             var builder = new StringBuilder();

@@ -48,6 +48,7 @@
     <Compile Include="ICryptoDatabase.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="NHibernateExtensions.cs" />
+    <Compile Include="Paging\IPagedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
   </ItemGroup>

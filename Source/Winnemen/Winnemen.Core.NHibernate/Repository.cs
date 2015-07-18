@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using NHibernate;
+using NHibernate.Criterion;
+using Winnemen.Core.NHibernate.Paging;
 
 namespace Winnemen.Core.NHibernate
 {
@@ -79,6 +81,22 @@ namespace Winnemen.Core.NHibernate
             return value;
         }
 
+        public List<TScheme> List(ICriterion restriction)
+        {
+            List<TScheme> value;
+
+            using (var trans = _session.BeginTransaction())
+            {
+                value = _session.QueryOver<TScheme>()
+                    .Where(restriction)
+                    .List().ToList();
+
+                trans.Commit();
+            }
+
+            return value;
+        }
+
         /// <summary>
         /// Alls this instance.
         /// </summary>
@@ -125,6 +143,70 @@ namespace Winnemen.Core.NHibernate
             }
 
             return item;
+        }
+
+        public IPagedList<TScheme> Paged(int pageIndex, int pageSize)
+        {
+            using (var trans = _session.BeginTransaction())
+            {
+                var rowCount = _session.CreateCriteria<TScheme>()
+                                    .SetProjection(Projections.RowCount())
+                                    .FutureValue<int>();
+
+                var results = _session.QueryOver<TScheme>()
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .Future<TScheme>()
+                    .ToList<TScheme>();
+
+                trans.Commit();
+
+                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCount.Value);
+            }
+        }
+
+        public IPagedList<TScheme> Paged(int pageIndex, int pageSize, Expression<Func<TScheme, bool>> @where)
+        {
+            using (var trans = _session.BeginTransaction())
+            {
+                var rowCount = _session.QueryOver<TScheme>()
+                                .Where(@where)
+                                .Select(Projections.RowCount())
+                                .FutureValue<int>();
+
+                var results = _session.QueryOver<TScheme>()
+                    .Where(@where)
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .Future<TScheme>()
+                    .ToList<TScheme>();
+
+                trans.Commit();
+
+                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCount.Value);
+            }
+        }
+
+        public IPagedList<TScheme> Paged(int pageIndex, int pageSize, ICriterion restriction)
+        {
+            using (var trans = _session.BeginTransaction())
+            {
+                var rowCount = _session.QueryOver<TScheme>()
+                                .Where(restriction)
+                                .Select(Projections.RowCount())
+                                .FutureValue<int>();
+
+                var results = _session.QueryOver<TScheme>()
+                    .Where(restriction)
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .Future<TScheme>()
+                    .ToList<TScheme>();
+
+                trans.Commit();
+
+                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCount.Value);
+            }
         }
     }
 }

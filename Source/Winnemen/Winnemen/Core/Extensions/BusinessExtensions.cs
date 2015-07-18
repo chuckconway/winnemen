@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Winnemen.Core.Extensions
 {
@@ -17,6 +18,33 @@ namespace Winnemen.Core.Extensions
         public static bool GreaterThan(this int integer, int value)
         {
             return integer > value;
+        }
+
+        public static void GreaterThan(this int integer, int value, Action action)
+        {
+            if (integer > value)
+            {
+                action();
+            }
+        }
+
+        public static void GreaterThan<TType>(this ICollection<TType> collection, int value, Action action)
+        {
+            if (collection.Count > value)
+            {
+                action();
+            }
+        }
+
+        public static void GreaterThanEach<TType>(this ICollection<TType> collection, int value, Action<TType> action)
+        {
+            if (collection.Count > value)
+            {
+                foreach (var type in collection)
+                {
+                    action(type);
+                }
+            }
         }
 
         public static bool GreaterThanOrEqual(this int integer, int value)
