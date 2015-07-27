@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Criterion.Lambda;
+using Winnemen.Core.NHibernate.OrderBy;
 using Winnemen.Core.NHibernate.Paging;
 
 namespace Winnemen.Core.NHibernate
@@ -189,7 +190,7 @@ namespace Winnemen.Core.NHibernate
             }
         }
 
-        private IQueryOver<TScheme, TScheme> SetOrderByDirection(OrderByBuilder<TScheme> orderBy, IQueryOver<TScheme, TScheme> query)
+        private static IQueryOver<TScheme, TScheme> SetOrderByDirection(OrderByBuilder<TScheme> orderBy, IQueryOver<TScheme, TScheme> query)
         {
             // ReSharper disable once ConvertIfStatementToReturnStatement
             if (orderBy.OrderByDirection == OrderByDirection.Ascending)
@@ -207,14 +208,17 @@ namespace Winnemen.Core.NHibernate
                 var rowCountQuery = _session.QueryOver<TScheme>()
                                 .Where(@where);
 
-                SetOrderByDirection(orderBy(new OrderByBuilder<TScheme>()), rowCountQuery);
+                 rowCountQuery = SetOrderByDirection(orderBy(new OrderByBuilder<TScheme>()), rowCountQuery);
 
                  var rowCount = rowCountQuery.Select(Projections.RowCount())
                                 .FutureValue<int>();
 
-                var results = _session.QueryOver<TScheme>()
-                    .Where(@where)
-                    .Skip((pageIndex - 1) * pageSize)
+                var resultsQuery = _session.QueryOver<TScheme>()
+                    .Where(@where);
+
+                resultsQuery = SetOrderByDirection(orderBy(new OrderByBuilder<TScheme>()), resultsQuery);
+
+                var results = resultsQuery.Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
                     .Future<TScheme>()
                     .ToList<TScheme>();
@@ -237,7 +241,7 @@ namespace Winnemen.Core.NHibernate
                 var query = _session.QueryOver<TScheme>()
                     .Where(restriction);
                 
-                query.Skip((pageIndex - 1) * pageSize)
+                var results = query.Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
                     .Future<TScheme>()
                     .ToList<TScheme>();

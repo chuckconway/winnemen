@@ -48,9 +48,9 @@
     <Compile Include="ICryptoDatabase.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="NHibernateExtensions.cs" />
-    <Compile Include="OrderByBuilder.cs" />
-    <Compile Include="OrderByDirection.cs" />
-    <Compile Include="OrderByDirectionBuilder.cs" />
+    <Compile Include="OrderBy\OrderByBuilder.cs" />
+    <Compile Include="OrderBy\OrderByDirection.cs" />
+    <Compile Include="OrderBy\OrderByDirectionBuilder.cs" />
     <Compile Include="Paging\IPagedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
@@ -58,9 +58,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OrderBy\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

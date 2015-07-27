@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Winnemen.Core.NHibernate
+namespace Winnemen.Core.NHibernate.OrderBy
 {
     public class OrderByBuilder<TScheme>
     {

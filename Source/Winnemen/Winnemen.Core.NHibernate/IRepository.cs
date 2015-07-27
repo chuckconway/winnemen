@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NHibernate.Criterion;
+using Winnemen.Core.NHibernate.OrderBy;
 using Winnemen.Core.NHibernate.Paging;
 
 namespace Winnemen.Core.NHibernate
@@ -63,6 +64,8 @@ namespace Winnemen.Core.NHibernate
         IPagedList<TScheme> Paged(int pageIndex, int pageSize);
 
         IPagedList<TScheme> Paged(int pageIndex, int pageSize, Expression<Func<TScheme, bool>> @where);
+
+        IPagedList<TScheme> Paged(int pageIndex, int pageSize, Expression<Func<TScheme, bool>> @where, Func<OrderByBuilder<TScheme>, OrderByBuilder<TScheme>> orderBy);
 
         IPagedList<TScheme> Paged(int pageIndex, int pageSize, ICriterion restriction);
     }

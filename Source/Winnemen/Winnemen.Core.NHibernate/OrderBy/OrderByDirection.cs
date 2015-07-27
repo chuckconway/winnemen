@@ -1,4 +1,4 @@
-namespace Winnemen.Core.NHibernate
+namespace Winnemen.Core.NHibernate.OrderBy
 {
     public enum OrderByDirection
     {
