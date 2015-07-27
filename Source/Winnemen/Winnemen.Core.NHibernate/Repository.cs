@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Criterion.Lambda;
 using Winnemen.Core.NHibernate.Paging;
 
 namespace Winnemen.Core.NHibernate
@@ -187,6 +189,42 @@ namespace Winnemen.Core.NHibernate
             }
         }
 
+        private IQueryOver<TScheme, TScheme> SetOrderByDirection(OrderByBuilder<TScheme> orderBy, IQueryOver<TScheme, TScheme> query)
+        {
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (orderBy.OrderByDirection == OrderByDirection.Ascending)
+            {
+                return query.OrderBy(orderBy.OrderExpresssion).Asc;
+            }
+
+            return query.OrderBy(orderBy.OrderExpresssion).Desc;
+        }
+
+        public IPagedList<TScheme> Paged(int pageIndex, int pageSize, Expression<Func<TScheme, bool>> @where, Func<OrderByBuilder<TScheme>, OrderByBuilder<TScheme>> orderBy)
+        {
+            using (var trans = _session.BeginTransaction())
+            {
+                var rowCountQuery = _session.QueryOver<TScheme>()
+                                .Where(@where);
+
+                SetOrderByDirection(orderBy(new OrderByBuilder<TScheme>()), rowCountQuery);
+
+                 var rowCount = rowCountQuery.Select(Projections.RowCount())
+                                .FutureValue<int>();
+
+                var results = _session.QueryOver<TScheme>()
+                    .Where(@where)
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .Future<TScheme>()
+                    .ToList<TScheme>();
+
+                trans.Commit();
+
+                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCount.Value);
+            }
+        }
+
         public IPagedList<TScheme> Paged(int pageIndex, int pageSize, ICriterion restriction)
         {
             using (var trans = _session.BeginTransaction())
@@ -196,9 +234,10 @@ namespace Winnemen.Core.NHibernate
                                 .Select(Projections.RowCount())
                                 .FutureValue<int>();
 
-                var results = _session.QueryOver<TScheme>()
-                    .Where(restriction)
-                    .Skip((pageIndex - 1) * pageSize)
+                var query = _session.QueryOver<TScheme>()
+                    .Where(restriction);
+                
+                query.Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
                     .Future<TScheme>()
                     .ToList<TScheme>();
