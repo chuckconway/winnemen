@@ -8,5 +8,10 @@ namespace Winnemen.Core.Extensions
         {
             return dateTime.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         }
+
+        public static DateTime? EndOfTheDay(this DateTime? dateTime)
+        {
+            return dateTime?.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+        }
     }
 }
