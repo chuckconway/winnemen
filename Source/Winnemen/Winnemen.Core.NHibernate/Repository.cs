@@ -190,6 +190,7 @@ namespace Winnemen.Core.NHibernate
             }
         }
 
+
         private static IQueryOver<TScheme, TScheme> SetOrderByDirection(OrderByBuilder<TScheme> orderBy, IQueryOver<TScheme, TScheme> query)
         {
             // ReSharper disable once ConvertIfStatementToReturnStatement
@@ -206,12 +207,9 @@ namespace Winnemen.Core.NHibernate
             using (var trans = _session.BeginTransaction())
             {
                 var rowCountQuery = _session.QueryOver<TScheme>()
-                                .Where(@where);
-
-                 rowCountQuery = SetOrderByDirection(orderBy(new OrderByBuilder<TScheme>()), rowCountQuery);
-
-                 var rowCount = rowCountQuery.Select(Projections.RowCount())
-                                .FutureValue<int>();
+                                .Where(@where)
+                    .Select(Projections.RowCount())
+                    .FutureValue<int>();
 
                 var resultsQuery = _session.QueryOver<TScheme>()
                     .Where(@where);
@@ -225,7 +223,7 @@ namespace Winnemen.Core.NHibernate
 
                 trans.Commit();
 
-                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCount.Value);
+                return new DataPagedList<TScheme>(results, pageIndex, pageSize, rowCountQuery.Value);
             }
         }
 
