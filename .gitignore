@@ -195,6 +195,7 @@ node_modules/
 dependencies/
 .idea/
 .git/
+.vs/
 /trunk/Source/Grover.sln.GhostDoc.user.dic
 trunk/Source/Grover.sln.DotSettings.user
 trunk/Source/packages/NUnit.2.6.3/license.txt
